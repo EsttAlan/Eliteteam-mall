@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.cy.mall.goodssimple.dao.BasketDao">
+  	<delete id="Delete">
+ 		delete from sku_basket 
+  		<where>
+  			<choose>
+  				<when test="ids!=null and ids.length>0">
+  					id in
+  					<foreach collection="ids" open="(" separator="," item="id" close=")">
+  						#{id}
+  					</foreach>
+  				</when>
+  				<otherwise>
+  					1=2
+  				</otherwise>
+  			</choose>
+  		</where>
+  	</delete>
+	<update id="Update">
+		update sku_basket set number=#{number} 
+		where id=#{id}
+	</update>
+	<update id="Update2">
+		update sku_basket set number=#{number}  
+		where id=#{id}
+	</update>
+	<select id="doFindByname"
+            resultType="com.cy.mall.goodssimple.pojo.Baskets">
+         select *
+         from sku_basket
+         <where>
+			<if test="name!=null and name!=''">
+			 skuName like concat("%",#{name},"%")
+			</if>
+		</where>
+	</select>
+	<insert id="Add">
+		insert into sku_basket (id,skuName,model,skuPrice,number,userId,img,skuId)values
+		(null,#{skuName},#{model},#{skuPrice},#{number},null,#{img},null);
+	
+	</insert> 
+  </mapper>

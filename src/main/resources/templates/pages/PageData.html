@@ -1,0 +1,224 @@
+<script type="text/css">
+#orderOptionColor a{
+	text-decoration: none;
+}	
+#nogoods{
+	padding:100px;
+}
+</script>
+<div th:fragment="pageFragement" id="pageId">
+	<div class="text-center col-md-10" id="orderMenu">
+		<ul class="pagination pagination-sm no-margin pull-left col-md-10" id="orderOptionColor">
+			<li>
+				<a id="id">综合排序
+					<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+				</a>
+			</li>
+			<li>
+				<a id="price">价格
+					<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+				</a>
+			</li>
+			<li>
+				<a id="salnumber">销量
+					<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+				</a>
+			</li>
+			<li>
+				<a id="createdTime" >上架时间
+					<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+				</a>
+			</li>
+		</ul>
+		<br></br>
+		<br></br>
+	</div>
+	<div class="col-md-10" id="tbody"></div>
+	<ul class="pagination pagination-sm no-margin pull-right" >
+		<li><a class="first">首页</a></li>
+		<li><a class="pre">上一页</a></li>
+		<li><a class="next">下一页</a></li>
+		<li><a class="last">尾页</a></li>
+		<li><a class="rowCount">总记录数(0)</a></li>
+		<li><a class="pageCount">总页数(0)</a></li>
+		<li><a class="pageCurrent" >当前页(1)</a></li>
+	</ul>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		debugger
+		//0.这部分用于接受外界传来的参数,是为了后面商品数据的刷新
+		var type=$([[${type}]]).prop("id");
+		if(type){
+			$("#pageId").data("type",type);
+		}
+		var keyWords="[[${keyWords}]]";
+		if(keyWords){
+			$("#pageId").data("keyWords",keyWords);
+		}
+		//排序默认是id
+		$("#pageId").data("orderOption","id");
+		
+	   //1.这里是用于接受外界传来的参数,完成页面的初始化
+	  	var url="GoodsPageData";
+	    var params={};
+	  	params.pageCurrent=1;
+	  	params.orderOption="id";
+	  	if(keyWords){
+	  		params.keyWords=keyWords;
+		}
+	  	if(type){
+	  		params.type=type;
+		}
+	  	$.get(url,params,function(result){
+	  		//将页面的结果给到doSetPagination,让它完成页面信息的初始化,并将赋值
+	  		doSetPagination(result.data);
+	  		doGetObjects();
+		})
+		//2.为当前页面的首页等按钮注册点击事件
+		$("#pageId").on("click",".first,.pre,.next,.last",doJumpToPage);
+		$("#pageId").on("click","#id,#createdTime,#price,#salnumber",doOrderObjects);
+ });
+	  //如处理排序事件,页面页码也需要重新计算,但是关键字/type原先是什么就是什么
+	  function doOrderObjects(){
+		   debugger
+		   //1.先页面页码重新计算,但是关键字,类型均不用重新进行
+		   $("#pageId").data("pageCurrent",1);
+		  //2.获取页面此时的排序关键字,若不为undefined则存入data
+		   var orderOption=$(this).prop("id");
+		   if(orderOption!=undefined)$("#pageId").data("orderOption",orderOption);
+		  //3)做完这些后,重新加载页面
+		   doGetObjects();
+	  } 
+	  //1.先完成页面值的初始化
+	 function doSetPagination(pageObject){
+		  //1.初始化总记录数
+		  $(".rowCount").html(`总记录数(${pageObject.rowCount})`);
+		  //2.初始化总页数
+		  $(".pageCount").html(`总页数(${pageObject.pageCount})`);
+		  //3.初始化当前页
+		  $(".pageCurrent").html(`当前页(${pageObject.pageCurrent})`);
+		  //4.存储当前页码值和总页数
+		  $("#pageId").data("pageCurrent",pageObject.pageCurrent);
+		  $("#pageId").data("pageCount",pageObject.pageCount);
+	  }
+	  //2.当页面发生点击搜索事件后,执行该方法,执行完刷新页面
+	  function doJumpToPage(){
+		  debugger
+		 //1.确定被点击的对象是谁 
+		 var cls=$(this).prop("class");//first,pre,next,last
+		 //2.修改当前页码值
+		 //0)获取当前页码值
+		 var pageCurrent=$("#pageId").data("pageCurrent");
+		 var pageCount=$("#pageId").data("pageCount");
+		 //1)点击首页时当前页码值应该修改为1
+		 if(cls=="first"&&pageCurrent!=1){
+			 pageCurrent=1;
+		 }
+		 //2)点击尾页时当前页码值应该为pageCount
+		 else if(cls=="last"&&pageCurrent!=pageCount){
+			 pageCurrent=pageCount;
+		 }
+		 //3)点击上一页时，假如当前页码值是大于1的则减一。
+		 else if(cls=="pre"&&pageCurrent>1){
+			 pageCurrent--;
+		 }
+		 //4)点击下一页时，假如当前页码值小于pageCount则加一。
+		 else if(cls=="next"&&pageCurrent<pageCount){
+			 pageCurrent++;
+		 }
+		 //5)已经是第一页还在点上一页或已经最后一页还在点下一页,则保持不变
+		 else {
+			 return;
+		 }
+		 //3.基于新的页码值查询当前页数据并更新到页码上
+		 //3.1重新存储新的页码值
+		 $("#pageId").data("pageCurrent",pageCurrent);
+		 //3.2执行新的查询
+		 doGetObjects();
+	  }
+	  //3.刷新页面
+	  function doGetObjects(){
+		   var url="/mall/GoodsPageData";
+		   //无论如何data中必存有页码,所以直接设置
+		   var pageCurrent=$("#pageId").data("pageCurrent");
+		   var params={"pageCurrent":pageCurrent}
+		   //如果data中有处理好的keywords不为空则用,否则不设置
+		   var keyWords=$("#pageId").data("keyWords");
+		   if(keyWords!=undefined)params.keyWords=keyWords;
+		   //如果data中有处理好的orderOption,则用,否则不设置
+		   var orderOption=$("#pageId").data("orderOption");
+		   var colorOrderOption="#id";
+		   if(orderOption!=undefined){params.orderOption=orderOption;
+		   //根据当前的排序模式,进行颜色渲染
+		   colorOrderOption="#"+orderOption};
+		   $("#orderOptionColor").find("a").prop("style","background-color: white;color:#337ab7")
+		   $(colorOrderOption).prop("style","background-color:#f30213;color:white")
+		   
+		   //如果data中有处理好的type,并且这个type不为空则用,否则如果keywords无输入则设置为all,再否则不设置
+		    var type=$("#pageId").data("type");
+		   if(type){
+			   params.type=type;
+		   }else if(!keyWords){
+			   type="all";
+			   params.type=type;
+		   }else{
+			   type=undefined;
+		   }
+		   //针对当前被选中type,则进行颜色渲染
+		   $("#kindsMenu").find("a").prop("style","text-decoration: none;");
+		   $("#"+type).prop("style","background-color:black;color:white;text-decoration: none;")
+		   //设置完成后,根据系统中已有的data组成的params,进行查询
+		   $.getJSON(url,params,function(result){
+			   doHandleResponseResult(result);
+		   });
+	  }
+	  function doHandleResponseResult(result){
+		   if(result.state==1){
+			  doSetPagination(result.data);
+			  //这里是加载中间的数据!!!!!!!!!!!!!!!!!!!!!!!
+			  doSetTableBodyRows(result.data.records); 
+			  //注意如果是没有搜索到记录这个的话,得清空页面
+			}else if(result.message=="没有查到符合条件的记录"){
+				  $("#tbody").empty();
+				  $("#tbody").append(`<div class="col-md-10">
+				  <img src="/goodspng/nogoods.jpg" width="800px" id="nogoods">
+				  <div>`); 
+				  $(".rowCount").html(`总记录数(0)`);
+				  $(".pageCount").html(`总页数(0)`);
+				  $(".pageCurrent").html(`当前页(0)`);
+			  }else{
+				  alert(result.message);
+			  }
+	  }
+	  function doSetTableBodyRows(record){
+		  //1.获取tbody对象，并清空内容
+		  var tBody=$("#tbody");
+		  tBody.empty();
+		  //2.将数据添加到tbody中
+		  for(var i=0;i<record.length;i++){
+			  var Tbody=doCreateTbody(record[i]);
+			  tBody.append(Tbody);
+		  }
+	   }
+	  function doCreateTbody(record){
+	       return `<div class="col-md-3 goodsInfo" >
+	       		<a class="btn btn-default goods" id=${record.id} style="white-space:normal;height:312.5px;outline:none;"
+	       			href="/detail/GoodsDetail?skuId=${record.id}">
+	       		<img src="/goodspng/${record.id}.png" width="170px">
+				<br></br> 
+				<span style="width: 200px; color: red; font-size: 20px;">￥${record.price}</span> 
+				<p style="width: 180px">${record.name}</p>
+				<br></br> 
+				</a>
+				</div>`
+	   }
+	  </script>
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="/jquery-3.5.1.js"></script>
+<style type="text/css">
+#footer p {
+		text-align: center;
+		font-size: 14px;
+		line-height: 34px;
+		color: #999;
+		margin-top: 0px;
+}
+p {
+	text-align: left;
+	font-size: 13px;
+	line-height: 20px;
+	color: #999;
+	}
+.col-rm-3 {
+	padding: 10px 10px;
+	float: left; 
+	background-color: black;
+	height: 480px;
+}
+.from-control{
+	margin-top: 23px;
+	margin-bottom: 23px;
+	height: 44px;
+	width: 320px;
+}
+div.col-cc-2{
+	float: right;
+	padding: 10px 30px;
+}
+.sousuo{
+	color:black;
+    padding: 4px;
+    margin-bottom: 4px;
+    border-width: 2px 2px 2px 2px;
+    border-color: #f30213;
+    border-style: solid;
+    color: black;
+}
+#lgosrc{
+	margin-right: 450px;
+} 
+#data{
+	margin-top: 10px;
+}
+#form{
+	margin-left: 370px;margin-top: 30px;
+}
+#menudiv{
+	text-align: left;margin-top:-70px;
+}
+ul.layui-nav{
+	margin-bottom: -30px;
+}
+#searchbutton{
+	height:44px;
+	background-color: #f30213
+}
+#layui-nav-item{
+	text-decoration: none;
+}
+.headmenu a{
+	text-decoration: none;
+}
+#kindsMenu a{
+	text-decoration: none;
+}
+.header{
+	width: 1250px
+}
+</style>
+<link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body >
+	
+	<!-- 头开始 -->
+	<header class="header">
+		<div class="col-cc-2">
+			<ul class="layui-nav" lay-filter="layui-nav">
+			<a  id="lgosrc" href="/mall/PagePrincipal"> 
+				<img class="logo" src="../WechatIMG76.jpeg" width="240" height="80" alt="错误">
+			</a>
+				<span class="headmenu"> 
+					<li class="layui-nav-item"><a href="/basket/doIndexUI">购物车</a></li>
+					<li class="layui-nav-item"><a href="#">订单详情</a></li>
+					<li class="layui-nav-item"><a href="#">个人中心</a></li>
+					<li class="layui-nav-item"><a href="#">免费注册</a></li>
+					<li class="layui-nav-item"><a href="/Eliteteam">退出</a></li>
+				</span>
+			</ul>
+			<div id="form" >
+				<input type="text" class="from-control sousuo" id="keyWords" name="keyWords"
+					 onkeydown="enterSelect()" placeholder="请输入商品名称进行搜索">
+				<button type="submit" id="searchbutton" onclick="chooseSelect()"
+				class="btn btn-danger" aria-hidden="true" >搜索</button>
+			</div>
+		</div>
+	</header>
+	<hr class="layui-bg-red">
+	<!-- 头结束 -->
+	
+	<br></br>
+	
+	<!-- 尾部开始 -->
+	<div id="menudiv">
+	</div>
+	<br></br>
+	<div id="footer" class="col-md-12">
+		<p>
+			关于我们 | 联系我们 | 人才招聘 | 商家入驻 | 营销中心 | 精英团队 | 友情连接 | 销售联盟 | 精英社区 | 精英公益|
+			nglish Eliteteam <br /> Eliteteam ©2020-6.4 精英JY.com版权所有
+		</p>
+	</div>
+	<!-- 尾部结束 -->
+	
+	<script type="text/javascript">
+		$(".menukind").click(function(){
+					debugger
+					$("#keyWords").val("");
+					var url="/mall/GoodsPageDataList";
+					var params="type="+$(this).attr("id");
+					$("#datadiv").load(url,params); 
+				});
+		function enterSelect(){
+			if(event.keyCode ==13){
+				var url="/mall/GoodsPageDataList";
+				var params="keyWords="+$("#keyWords").val();
+				$("#datadiv").load(url,params);
+				}
+			}
+		function chooseSelect(){
+			debugger;
+			var url="/mall/GoodsPageDataList";
+			var params="keyWords="+$("#keyWords").val();
+			$("#datadiv").load(url,params);
+		}
+	</script>
+	<script src="/layui/layui.all.js"></script>
+</body>
+</html>

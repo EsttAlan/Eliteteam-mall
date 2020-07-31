@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>凤凰商城</title>
+<link rel="stylesheet" href="/css/basket.css" />
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" href="../../layui/css/layui.css" />
+
+<script src="/jquery-3.5.1.js"></script>
+<style type="text/css">
+
+</style>
+<link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body >
+	<script src="/layui/layui.all.js"></script>
+		<div class="header">
+			<div class="col-cc-2">
+				<ul class="layui-nav" lay-filter="layui-nav">
+				<a  id="lgosrc" class="pull-left" href="/mall/PagePrincipal"
+				> 
+					<img class="logo" src="/1.jpg" width="400" height="80" alt="错误">
+				</a>
+					<span class="layui-nav-span pull-right" > 
+						<li class="layui-nav-item"><a href="/basket/doIndexUI">购物车</a></li>
+						<li class="layui-nav-item"><a href="#">订单详情</a></li>
+						<li class="layui-nav-item"><a href="#">个人中心</a></li>
+						<li class="layui-nav-item"><a href="#">免费注册</a></li>
+						<li class="layui-nav-item"><a href="../Eliteteam">退出</a></li>
+					</span>
+				</ul>
+				
+				
+		</div>
+		</div>
+	<div id="main">
+		<form action="doFinds" method="post" >
+			
+			<table class="table table-striped" style="margin-left:auto;margin-right:auto;text-align:center; width:1200px"  >
+				<thead>
+				<tr>
+				<th>
+				<div class="pull-left" >
+					<input type="button" class="btn btn-primary btn-lg active" value="结算" onclick="window.location.href='/basket/order'"> 
+				</div>
+				</th>
+				<th>
+				<div class="pull-left">
+					<input type="button"  class="btn btn-primary btn-lg active"value="批量删除" onclick="doDeletes()">
+				</div>
+				</th>
+				<th colspan="2">
+					<div id="form" class="pull-right" onKeyDown = "_b()">
+					<input type="text" class="from-control sousuo" id="keyWords" name="keyWords" style="width:230px;height:35px"
+						placeholder="请输入商品名称进行搜索" >
+					<input type = "button" id="searchbutton" class="btn btn-danger" aria-hidden="true" onclick = "_a()"  style="height:35px" value = "搜索"/>
+					
+				</div>
+				
+				</th>
+				<th colspan="3">
+		<div id="pull" style="color:#FF0000">
+			<span class="pull-right"> 已选商品 
+				<span id="danjia">0</span>件 总价￥ 
+				<span id="count">0</span> 元&emsp;
+			</span>
+		</div>
+		</th>
+		
+				</thead>
+				<tr>
+					<td><input type="checkbox" id="all"  />全选</td>
+					<td>商品</td>
+					<td>规格</td>
+					<td>单价</td>
+					<td>数量</td>
+					<td>金额</td>
+					<td colspan="1">操作</td>
+				</tr>
+				<tbody id="tbody">
+					    <tr>
+					       <td>数据正在加载中...</td>
+					    </tr>
+				</tbody>
+				
+		</table>
+		</form>
+	</div>
+	
+	
+	<div id=footer>
+		<p>
+			关于我们 | 联系我们 | 人才招聘 | 商家入驻 | 营销中心 | 精英团队 | 友情连接 | 销售联盟 | 精英社区 | 精英公益 |
+			English Eliteteam <br /> Eliteteam 2020-6.4 精英JY.com版权所有
+		</p>
+	</div>
+
+</body>
+</html>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="../layui/layui.all.js"></script>
+<script type="text/javascript" src="/js/basket.js"/>
+<script type="text/javascript"></script>
+</body>
+</html>

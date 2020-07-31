@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="/jquery-3.5.1.js"></script>
+<style type="text/css">
+#footer p {
+		text-align: center;
+		font-size: 14px;
+		line-height: 34px;
+		color: #999;
+		margin-top: 0px;
+}
+p {
+	text-align: left;
+	font-size: 13px;
+	line-height: 20px;
+	color: #999;
+	}
+.col-rm-3 {
+	padding: 10px 10px;
+	float: left; 
+	background-color: black;
+	height: 480px;
+}
+.from-control{
+	margin-top: 23px;
+	margin-bottom: 23px;
+	height: 44px;
+	width: 320px;
+}
+div.col-cc-2{
+	float: right;
+	padding: 10px 30px;
+}
+.sousuo{
+	color:black;
+    padding: 4px;
+    margin-bottom: 4px;
+    border-width: 2px 2px 2px 2px;
+    border-color: #f30213;
+    border-style: solid;
+    color: black;
+}
+#lgosrc{
+	margin-right: 450px;
+} 
+#data{
+	margin-top: 10px;
+}
+#form{
+	margin-left: 370px;margin-top: 30px;
+}
+#menudiv{
+	text-align: left;margin-top:-70px;
+}
+ul.layui-nav{
+	margin-bottom: -30px;
+}
+#searchbutton{
+	height:44px;
+	background-color: #f30213
+}
+#layui-nav-item{
+	text-decoration: none;
+}
+.headmenu a{
+	text-decoration: none;
+}
+#kindsMenu a{
+	text-decoration: none;
+}
+.header{
+	width: 1250px
+}
+</style>
+<link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body >
+	<script src="/layui/layui.all.js"></script>
+		<header class="header">
+			<div class="col-cc-2">
+				<ul class="layui-nav" lay-filter="layui-nav">
+				<a  id="lgosrc" href="/mall/PagePrincipal"> 
+					<img class="logo" src="/Eliteteam.jpeg" width="240" height="80" alt="错误">
+				</a>
+					<span class="headmenu"> 
+						<li class="layui-nav-item"><a href="#">购物车</a></li>
+						<li class="layui-nav-item"><a href="#">订单详情</a></li>
+						<li class="layui-nav-item"><a href="#">个人中心</a></li>
+						<li class="layui-nav-item"><a href="#">免费注册</a></li>
+						<li class="layui-nav-item"><a href="../Eliteteam">退出</a></li>
+					</span>
+				</ul>
+				<th colspan="2">
+					<div id="form" class="pull-right" onKeyDown = "_b()">
+					<input type="text" class="from-control sousuo" id="keyWords" name="keyWords" style="width:230px;height:35px"
+						placeholder="请输入商品名称进行搜索" >
+					<input type = "button" id="searchbutton" class="btn btn-danger" aria-hidden="true" onclick = "_a()"  style="height:35px" value = "搜索"/>
+					
+				</div>
+				
+				</th>
+			</div>
+		</header>
+		<hr class="layui-bg-red">
+	<br></br>
+	
+
+
+
+	<!-- 上头,下身 -->
+
+
+	<div>
+			<!-- 添加地址  -->
+			<div class="pull-right">
+			<button type="button" class="btn btn-primary" data-toggle="modal"
+				onclick="doShowAddDialogs()">添加地址</button>
+			<!-- <button type="button" class="btn btn-success"
+				data-toggle="modal" onclick="doGetActivitys()">刷  新</button> -->
+		</div>
+
+
+	</div>
+	<h3>收货地址</h3>
+	<div>
+	<table class="table" id="ads">
+		<thead>
+			<div>
+				<th>id</th>
+				<th>收货人</th>
+				<th>收货地址</th>
+				<th>收货手机</th>
+				<th>备注</th>
+				<th colspan="2">操作</th>
+			</div>
+		</thead>
+	
+		<tbody>
+			
+
+		<!--  	<tr th:each="g:${ads}">
+				<td th:text="${g.id}"></td>
+				<td th:text="${g.name}"></td>
+				<td th:text="${g.useraddress}"></td>
+				<td th:text="${g.createtime}"></td>
+				<td th:text="${g.remark}"></td>
+						
+		<td></td>
+
+
+				
+			</tr> 
+			
+			
+				 -->
+				   <tr><td colspan="6">Data is Loading....</td></tr>
+		
+		</tbody>
+	</table>
+		</div>
+		
+		
+		
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-name" id="myModalLabel">收货地址</h4>
+				</div>
+				<div class="modal-body">
+					<form id="atyFormId" class="form-horizontal">
+						<input type="hidden" name="id" id="atyId">
+						<div class="form-group">
+							<label for="nameId" class="col-sm-2 control-label">收货人</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" name="name"
+									id="nameId" placeholder="name">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="useraddressId" class="col-sm-2 control-label">收货地址</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" name="useraddress"
+									id="useraddressId" placeholder="useraddress">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="createtimeId" class="col-sm-2 control-label">收货手机</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" name="createtime"
+									id="createtimeId" placeholder="xxxxxxxxxxx">
+							</div>
+						</div>
+						<!-- <div class="form-group">
+							<label for="endTimeId" class="col-sm-2 control-label">endTime</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" name="endTime"
+									id="endTimeId" placeholder="yyyy/MM/dd">
+							</div>
+						</div> -->
+						<div class="form-group">
+							<label for="remarkId" class="col-sm-2 control-label">留言</label>
+							<div class="col-sm-10">
+								<textarea class="form-control" id="remarkId" name="remark"
+									placeholder="remark"></textarea>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						onclick="doSaveActivitys()">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+	<!--     -->
+	
+			
+		
+		<table >
+			<!-- <thead>
+				<tr>
+					<th></th>
+					<th>商品</th>
+					<th>规格</th>
+					<th>单价</th>
+					<th>数量</th>
+					<th>售后</th>
+					<th>状态</th>
+					<th><input type="checkbox" id="all"  />全选</th>
+				</tr>
+			</thead>
+
+			<tbody class="table" id="tobdy">
+				<tr th:each="g:${list}">
+					<td th:text="${g.id}"></td>
+					<td th:text="${g.name}"></td>
+					<td th:text="${g.model}"></td>
+					<td th:text="${g.money}"></td>
+					<td th:text="${g.number}"></td>
+					<td><a>申请售后</a></td>
+					<td>未发货 </br> <a>订单详情</a>
+					</td> 
+					<td><input type="checkbox" /></td>
+				</tr>
+			</tbody> -->
+			
+			<table class="table" style="margin-top:50px;"  >
+				<tr>
+				
+					<td><input type="checkbox" id="all"  />全选</td>
+					<td>商品</td>
+					<td>规格</td>
+					<td>单价</td>
+					<td>数量</td> 
+					<th>金额</th>
+					<td colspan="1">确认收货</td>
+				</tr>
+				<tbody id="tbody">
+					    <tr>
+					       <td>数据正在加载中...</td>
+					    </tr>
+				</tbody>
+			</table>
+				
+			  
+		</table>
+		
+		<div id="pull">
+			<span class="pull-left"> 已选商品 
+				<span id="danjia">0</span>件 总价￥ 
+				<span id="count">0</span> 元&emsp;
+			</span>
+		</div>
+		
+	   
+		<div class="text-left">
+			<label class="radio-inline"> <input type="radio"
+				name="optionsRadios" id="optionsRadios1" checked="checked">
+				支付宝
+			</label> <label class="radio-inline"> <input type="radio"
+				name="optionsRadios" id="optionsRadios2"> 微信
+			</label> <label class="radio-inline"> <input type="radio"
+				name="optionsRadios" id="optionsRadios3"> 网银
+			</label> <label class="radio-inline"> <input type="radio"
+				name="optionsRadios" id="optionsRadios4"> 货到付款
+			</label>
+		
+		</div>
+		
+		<div class="pull-right">
+			<button type="button" class="layui-btn" 
+			onclick="window.location.href='/basket/finshorder'" >确认付款</button>
+		</div>
+		
+
+		
+
+	</div>
+	<div>
+			</br>
+	</div>
+	<div id=footer>
+		<p>
+			关于我们 | 联系我们 | 人才招聘 | 商家入驻 | 营销中心 | 精英团队 | 友情连接 | 销售联盟 | 精英社区 | 精英公益 |
+			English Eliteteam <br /> Eliteteam 2020-6.4 精英JY.com版权所有
+		</p>
+	</div>
+
+
+</body>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="../layui/layui.all.js"></script>
+<script type="text/javascript" src="/js/address.js"></script>
+<script type="text/javascript" src="/js/order.js"></script>
+    
+</html>

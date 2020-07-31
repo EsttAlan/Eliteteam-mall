@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title></title>
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<style>
+/*sku选择样式*/
+#spec-img{
+display:inline-block;
+	text-align: center;
+}
+li {
+	list-style: none;
+	margin-right: 10px;
+}
+
+li label {
+	cursor: pointer;
+}
+
+li {
+	float: left;
+	line-height: 30px;
+}
+
+.clear {
+	clear: both;
+}
+
+.AttributeValue {
+	border: 1px solid #808080;
+	padding: 5px 10px;
+}
+
+.choices {
+	border-color: #e01313
+}
+
+.disabled {
+	border: 1px dashed #b1abab;
+	background-color: #f1f1f1;
+}
+
+.disabled label {
+	cursor: not-allowed;
+}
+
+.container>div {
+	height: 100px;
+	width: 100px;
+	float: left;
+}
+
+.show {
+	padding-left: 14px;
+	display:inline-block;
+	text-align: center;
+}
+</style>
+<script src="http://neue.cc/linq.min.js"></script>
+<script>
+	var Combination1 = {
+		Id : 1,
+		ProductId : 21,
+		Attributes : ",9,13,19,21,",
+		StockQuantity : 10,
+		OverriddenPrice : 99
+	};
+	var Combination2 = {
+		Id : 2,
+		ProductId : 21,
+		Attributes : ",9,14,20,23,",
+		StockQuantity : 10,
+		OverriddenPrice : 199
+	};
+	var Combination3 = {
+		Id : 3,
+		ProductId : 21,
+		Attributes : ",10,16,19,25,",
+		StockQuantity : 10,
+		OverriddenPrice : 299
+	};
+	var Combination4 = {
+		Id : 4,
+		ProductId : 21,
+		Attributes : ",10,17,20,24,",
+		StockQuantity : 10,
+		OverriddenPrice : 299
+	};
+	var Combination5 = {
+		Id : 5,
+		ProductId : 21,
+		Attributes : ",11,17,20,24,",
+		StockQuantity : 10,
+		OverriddenPrice : 299
+	};
+	var Combination6 = {
+		Id : 6,
+		ProductId : 21,
+		Attributes : ",12,14,19,22,",
+		StockQuantity : 10,
+		OverriddenPrice : 299
+	};
+	//list:来自数据查询出来的商品组合属性json数据
+	var list = [];
+	list.push(Combination1);
+	list.push(Combination2);
+	list.push(Combination3);
+	list.push(Combination4);
+	list.push(Combination5);
+	list.push(Combination6);
+	//SKU_TYPET:来自数据库中商品属性json数据
+	var SKU_TYPET = [ {
+		AttributeId : 7,
+		Attribute : "颜色",
+		AttributeValues : [ {
+			AttributeValueId : 9,
+			AttributeValue : "金色"
+		}, {
+			AttributeValueId : 10,
+			AttributeValue : "黑色"
+		}, {
+			AttributeValueId : 11,
+			AttributeValue : "银色"
+		}, {
+			AttributeValueId : 12,
+			AttributeValue : "红色"
+		} ]
+	}, {
+		AttributeId : 8,
+		Attribute : "版本",
+		AttributeValues : [ {
+			AttributeValueId : 13,
+			AttributeValue : "公开版"
+		}, {
+			AttributeValueId : 14,
+			AttributeValue : "原厂延保版"
+		}, {
+			AttributeValueId : 15,
+			AttributeValue : "双网通版"
+		}, {
+			AttributeValueId : 16,
+			AttributeValue : "无线充套装"
+		}, {
+			AttributeValueId : 17,
+			AttributeValue : "AirPods套装"
+		}, {
+			AttributeValueId : 18,
+			AttributeValue : "分期用版"
+		} ]
+	}, {
+		AttributeId : 9,
+		Attribute : "内存",
+		AttributeValues : [ {
+			AttributeValueId : 19,
+			AttributeValue : "64G"
+		}, {
+			AttributeValueId : 20,
+			AttributeValue : "256G"
+		} ]
+	}, {
+		AttributeId : 10,
+		Attribute : "套装",
+		AttributeValues : [ {
+			AttributeValueId : 21,
+			AttributeValue : "优惠套装1"
+		}, {
+			AttributeValueId : 22,
+			AttributeValue : "优惠套装2"
+		}, {
+			AttributeValueId : 23,
+			AttributeValue : "优惠套装3"
+		}, {
+			AttributeValueId : 24,
+			AttributeValue : "优惠套装4"
+		}, {
+			AttributeValueId : 25,
+			AttributeValue : "优惠套装5"
+		} ]
+	} ];
+	$(function() {
+		function ishas(AttributeValueIds) {
+			var newlist = list.concat();
+			var newAttributeValueIds = AttributeValueIds;
+			for (var i = 0; i < newAttributeValueIds.length; i++) {
+				newlist = Enumerable.From(newlist).Where(function(x) {
+					return x.Attributes.indexOf(newAttributeValueIds[i]) > -1;
+				}).ToArray();
+			}
+			if (newlist.length > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		init(SKU_TYPET);
+		//init:绑定商品属性数据
+		
+	function init(SKU_TYPET) {
+			var SKU_TYPE = "";
+			$
+					.each(
+							SKU_TYPET,
+							function(index, item) {
+								SKU_TYPE += '<ul class="SKU_TYPE"> <li sku-type-name="' + item.Attribute + '">'
+										+ item.Attribute + '：</li></ul>';
+								SKU_TYPE += "<ul>";
+								$
+										.each(
+												item.AttributeValues,
+												function(i, childitem) {
+													var AttributeValueIdsArry = [];
+													AttributeValueIdsArry
+															.push(","
+																	+ childitem.AttributeValueId
+																	+ ",");
+													if (!ishas(AttributeValueIdsArry)) {
+														SKU_TYPE += '<li class="AttributeValue  disabled" data-AttributeId="' + item.AttributeId + '" data-AttributeValueId="' + childitem.AttributeValueId + '"><label>'
+																+ childitem.AttributeValue
+																+ '</label></li>';
+													} else {
+														SKU_TYPE += '<li class="AttributeValue  available" data-AttributeId="' + item.AttributeId + '" data-AttributeValueId="' + childitem.AttributeValueId + '"><label>'
+																+ childitem.AttributeValue
+																+ '</label></li>';
+													}
+
+												});
+								SKU_TYPE += "</ul>";
+								SKU_TYPE += '<div class="clear"></div>';
+							});
+
+			$("#show").html(SKU_TYPE);
+		}
+		//Attribute:已选择的商品属性集合[{ AttributeId: 7, AttributeValueId: 9 }]
+		var Attribute = [];
+		//取消已选择属性点击事件
+		$("body")
+				.on(
+						"click",
+						".choices",
+						function(event) {
+							$(this).removeClass("choices");
+							$(this).addClass("available");
+							var AttributeId = $(this).attr("data-AttributeId");
+							var AttributeValueId = $(this).attr(
+									"data-AttributeValueId");
+							//从Attribute删除已选择属性
+							var itemIndex = 0;
+							$.each(Attribute, function(index, item) {
+								if (item.AttributeId == parseInt(AttributeId)) {
+									itemIndex = index;
+								}
+							});
+							Attribute.splice(itemIndex, 1);
+							//重新绑定
+							$
+									.each(
+											SKU_TYPET,
+											function(index, item) {
+												$
+														.each(
+																item.AttributeValues,
+																function(i,
+																		childitem) {
+																	var newAttributeValueIds = Enumerable
+																			.From(
+																					Attribute)
+																			.Select(
+																					function(
+																							x) {
+																						return x.AttributeValueId
+																					})
+																			.ToArray();
+																	var AttributeValueIdsArry = [];
+																	$
+																			.each(
+																					Attribute,
+																					function(
+																							i,
+																							it) {
+																						AttributeValueIdsArry
+																								.push(","
+																										+ it.AttributeValueId
+																										+ ",");
+																					});
+																	AttributeValueIdsArry
+																			.push(","
+																					+ childitem.AttributeValueId
+																					+ ",");
+																	if (!ishas(AttributeValueIdsArry)) {
+																		$(
+																				"[data-AttributeValueId='"
+																						+ childitem.AttributeValueId
+																						+ "']")
+																				.addClass(
+																						"disabled");
+																		$(
+																				"[data-AttributeValueId='"
+																						+ childitem.AttributeValueId
+																						+ "']")
+																				.removeClass(
+																						"available");
+
+																	} else {
+																		$(
+																				"[data-AttributeValueId='"
+																						+ childitem.AttributeValueId
+																						+ "']")
+																				.removeClass(
+																						"disabled");
+																		if (!$(
+																				"[data-AttributeValueId='"
+																						+ childitem.AttributeValueId
+																						+ "']")
+																				.hasClass(
+																						"choices")) {
+																			$(
+																					"[data-AttributeValueId='"
+																							+ childitem.AttributeValueId
+																							+ "']")
+																					.addClass(
+																							"available");
+																		}
+																	}
+																});
+
+											});
+
+						});
+		//选择属性点击事件
+		$("body")
+				.on(
+						"click",
+						".available",
+						function() {
+							var AttributeId = $(this).attr("data-AttributeId");
+							var AttributeValueId = $(this).attr(
+									"data-AttributeValueId");
+							//先判断Attribute是否存在该属性，
+							if (Enumerable.From(Attribute).ToLookup(
+									"$.AttributeId").Contains(
+									parseInt(AttributeId))) {
+								$
+										.each(
+												Attribute,
+												function(index, item) {
+													//存在更新其值
+													if (item.AttributeId == parseInt(AttributeId)) {
+														item.AttributeValueId = parseInt(AttributeValueId);
+													}
+												});
+							}
+							//不存在则添加
+							else {
+								Attribute
+										.push({
+											AttributeId : parseInt(AttributeId),
+											AttributeValueId : parseInt(AttributeValueId)
+										});
+							}
+							//循环每一项属性值并查询
+							$
+									.each(
+											SKU_TYPET,
+											function(index, item) {
+												$
+														.each(
+																item.AttributeValues,
+																function(i,
+																		childitem) {
+																	var newAttributeValueIds = Enumerable
+																			.From(
+																					Attribute)
+																			.Select(
+																					function(
+																							x) {
+																						return x.AttributeValueId
+																					})
+																			.ToArray();
+																	var AttributeValueIdsArry = [];
+																	$
+																			.each(
+																					Attribute,
+																					function(
+																							i,
+																							it) {
+																						AttributeValueIdsArry
+																								.push(","
+																										+ it.AttributeValueId
+																										+ ",");
+																					});
+																	AttributeValueIdsArry
+																			.push(","
+																					+ childitem.AttributeValueId
+																					+ ",");
+																	if (!ishas(AttributeValueIdsArry)) {
+																		$(
+																				"[data-AttributeValueId='"
+																						+ childitem.AttributeValueId
+																						+ "']")
+																				.addClass(
+																						"disabled");
+																		$(
+																				"[data-AttributeValueId='"
+																						+ childitem.AttributeValueId
+																						+ "']")
+																				.removeClass(
+																						"available");
+
+																	} else {
+																		$(
+																				"[data-AttributeValueId='"
+																						+ childitem.AttributeValueId
+																						+ "']")
+																				.removeClass(
+																						"disabled");
+																		if (!$(
+																				"[data-AttributeValueId='"
+																						+ childitem.AttributeValueId
+																						+ "']")
+																				.hasClass(
+																						"choices")) {
+																			$(
+																					"[data-AttributeValueId='"
+																							+ childitem.AttributeValueId
+																							+ "']")
+																					.addClass(
+																							"available");
+																		}
+
+																	}
+																});
+
+											});
+							$(this).removeClass("available");
+							$(this).addClass("choices");
+
+						});
+		$("#Button1").click(function() {
+			if (Attribute.length != SKU_TYPET.length) {
+				$("#show").css("border", "2px solid #ff0000");
+				alert("请选择您要的商品信息");
+			} else {
+				$("#show").css("border", "0");
+				alert("你已选择：" + JSON.stringify(Attribute));
+			}
+		})
+	});
+</script>
+</head>
+<body>
+	<div class="container">
+		<div class="preview" id="preview">
+			<div id="spec-n1" class="jqzoom main-img" data-big="1"
+				clstag="shangpin|keycount|product|mainpic_1">
+				<ul class="preview-btn J-preview-btn">
+					<li><span class="video-icon J-video-icon"
+						clstag="shangpin|keycount|product|picvideo" style=""></span></li>
+				</ul>
+				<div>
+				<img id="spec-img" width="450"
+					data-origin="//img13.360buyimg.com/n1/s450x450_jfs/t1/74848/37/9707/153231/5d78110cE22c96dcb/6f80fa75e7fe2864.jpg"
+					alt="Apple iPhone 11 (A2223) 64GB 紫色 移动联通电信4G手机 双卡双待"
+					src="C:/Users/Administrator/Desktop/HUAWEI.jpg"
+					jqimg="//img13.360buyimg.com//n0/jfs/t1/74848/37/9707/153231/5d78110cE22c96dcb/6f80fa75e7fe2864.jpg">
+				</div>
+				<i></i>
+				<div id="belt"></div>
+			</div>
+			<div class="video" id="v-video" data-vu="124328948"
+				style="display: none; width: 450px; height: 450px; z-index: 6;">
+				<div class="J-v-player"></div>
+				<a href="#none" class="close-video J-close"
+					clstag="shangpin|keycount|product|closepicvideo"></a>
+			</div>
+			<script>
+				(function(doc, cfg) {
+					var img = doc.getElementById('spec-img');
+					var src = img.getAttribute('data-origin');
+					var nsz = 300;
+
+					if ((!cfg.wideVersion || !cfg.compatible)
+							&& !cfg.product.ctCloth) {
+						img.setAttribute('width', nsz);
+						/*img.setAttribute('height', nsz);*/
+						img.setAttribute('src', src.replace('s450x450', 's'
+								+ nsz + 'x' + nsz));
+					} else {
+						img.setAttribute('src', src);
+					}
+
+					if (cfg.product.ctCloth) {
+						if (!cfg.wideVersion || !cfg.compatible) {
+							img.setAttribute('width', nsz);
+						}
+					}
+				})(document, pageConfig);
+			</script>
+			<div class="spec-list" clstag="shangpin|keycount|product|lunbotu_1">
+				<a id="spec-forward" href="javascript:;" class="arrow-prev disabled"><i
+					class="sprite-arrow-prev"></i></a> <a id="spec-backward"
+					href="javascript:;" class="arrow-next"><i
+					class="sprite-arrow-next"></i></a>
+				<div id="spec-list" class="spec-items"
+					style="position: relative; width: 380px; height: 58px; overflow: hidden;">
+					<ul class="lh"
+						style="position: absolute; width: 456px; height: 58px; top: 0px; left: 0px;">
+						<li class="img-hover"><img
+							alt="Apple iPhone 11 (A2223) 64GB 紫色 移动联通电信4G手机 双卡双待"
+							src="//img13.360buyimg.com/n5/s54x54_jfs/t1/74848/37/9707/153231/5d78110cE22c96dcb/6f80fa75e7fe2864.jpg"
+							data-url="jfs/t1/74848/37/9707/153231/5d78110cE22c96dcb/6f80fa75e7fe2864.jpg"
+							data-img="1" width="54" height="54"></li>
+						<li class=""><img
+							alt="Apple iPhone 11 (A2223) 64GB 紫色 移动联通电信4G手机 双卡双待"
+							src="//img13.360buyimg.com/n5/s54x54_jfs/t1/80147/3/9895/105371/5d781110E777ae231/6c319bd5c216e105.jpg"
+							data-url="jfs/t1/80147/3/9895/105371/5d781110E777ae231/6c319bd5c216e105.jpg"
+							data-img="1" width="54" height="54"></li>
+						<li class=""><img
+							alt="Apple iPhone 11 (A2223) 64GB 紫色 移动联通电信4G手机 双卡双待"
+							src="//img13.360buyimg.com/n5/s54x54_jfs/t1/73516/3/10013/125891/5d781113E888df276/7aac9a517820d6bb.jpg"
+							data-url="jfs/t1/73516/3/10013/125891/5d781113E888df276/7aac9a517820d6bb.jpg"
+							data-img="1" width="54" height="54"></li>
+						<li class=""><img
+							alt="Apple iPhone 11 (A2223) 64GB 紫色 移动联通电信4G手机 双卡双待"
+							src="//img13.360buyimg.com/n5/s54x54_jfs/t1/42581/32/14546/171990/5d781117Ed66150ed/bb492e3985dbac9d.jpg"
+							data-url="jfs/t1/42581/32/14546/171990/5d781117Ed66150ed/bb492e3985dbac9d.jpg"
+							data-img="1" width="54" height="54"></li>
+						<li class=""><img
+							alt="Apple iPhone 11 (A2223) 64GB 紫色 移动联通电信4G手机 双卡双待"
+							src="//img13.360buyimg.com/n5/s54x54_jfs/t1/57818/1/10469/164377/5d78111bE2bc684e9/5b1ce1530641e6aa.jpg"
+							data-url="jfs/t1/57818/1/10469/164377/5d78111bE2bc684e9/5b1ce1530641e6aa.jpg"
+							data-img="1" width="54" height="54"></li>
+						<li><img
+							alt="Apple iPhone 11 (A2223) 64GB 紫色 移动联通电信4G手机 双卡双待"
+							src="//img13.360buyimg.com/n5/s54x54_jfs/t1/59438/22/9809/69763/5d78111fEd091f58f/429c8fe3287446ee.jpg"
+							data-url="jfs/t1/59438/22/9809/69763/5d78111fEd091f58f/429c8fe3287446ee.jpg"
+							data-img="1" width="54" height="54"></li>
+					</ul>
+				</div>
+			</div>
+			<div class="preview-info">
+				<div class="left-btns">
+					<a class="follow J-follow" data-id="100008348508" href="#none"
+						clstag="shangpin|keycount|product|guanzhushangpin_1"> <i
+						class="sprite-follow-sku"></i><em>关注</em>
+					</a> <a class="share J-share" href="#none"
+						clstag="shangpin|keycount|product|share_1"> <i
+						class="sprite-share"></i><em>分享</em>
+					</a> <a class="compare J-compare J_contrast" id="comp_100008348508"
+						data-sku="100008348508" href="#none"
+						clstag="shangpin|keycount|product|jiaruduibi"> <i
+						class="sprite-compare"></i><em>对比</em>
+					</a>
+				</div>
+				<div class="right-btns">
+					<a class="report-btn"
+						href="//jubao.jd.com/index.html?skuId=100008348508"
+						target="_blank" clstag="shangpin|keycount|product|jubao">举报</a>
+				</div>
+			</div>
+
+			<div class="purchase-op">
+				<a href="//mall.jd.com/index-1000146566.html"
+					class="volume-purchase" target="_blank">企业购更优惠</a>
+			</div>
+		</div>
+
+		<div style="width: 700px;text-align: right;margin-right=10px">
+		<div id="show" ></div>
+		<input id="Button1" type="button" value="购买"
+			style="margin-left: 98px; margin-top: 20px" />
+
+	</div>
+		</div>
+
+</body>
+</html>
+

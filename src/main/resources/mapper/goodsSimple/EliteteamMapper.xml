@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.cy.mall.goodssimple.dao.EliteteamDao">
+  <insert id="insertEliteteam"
+   parameterType="com.cy.mall.goodssimple.pojo.Eliteteam"
+          useGeneratedKeys="true"
+          keyProperty="id">
+   insert into sys_users(username,password,salt,number)
+   values
+   (#{username},#{password},#{salt},#{number})
+  
+  <!-- <select id="findUserByUserName" resultType="com.cy.Eliteteam.pojo.Eliteteam">
+  select*from sys_users where username=#{name}
+   -->
+  
+  
+
+  
+  
+  
+  </insert>
+  
+  
+  
+  
+  </mapper>

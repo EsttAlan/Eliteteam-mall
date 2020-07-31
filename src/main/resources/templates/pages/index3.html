@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<style type="text/css">
+
+#sku input[type=button].selected{
+    color: red;
+}
+</style>
+
+<script type="text/javascript">
+
+//获得对象的key
+function getObjKeys(obj){
+    if(obj !== Object(obj)){
+        throw new TypeError('Invalid object');
+    }
+    var keys = [];
+    for(var key in obj){
+        if(Object.prototype.hasOwnProperty.call(obj, key)){
+            keys[keys.length] = key;
+        }
+    }
+    return keys;
+}
+function arrayCombine(targetArr){
+    var resultArr = [];
+    for(var n = 0; n <= targetArr.length; n++){
+        var flagArrs = getFlagArrs(targetArr.length, n);
+        while(flagArrs.length){
+            var flagArr = flagArrs.shift();
+            var combArr = Array(targetArr.length);
+            for(var i = 0; i < targetArr.length; i++){
+                if(flagArr[i]){
+                    combArr[i] = targetArr[i];
+                }
+            }
+            resultArr.push(combArr);
+        }
+    }
+    return resultArr;
+}
+// 从m中取n的所有组合
+function getFlagArrs(m, n) {
+    var flagArrs = [],
+        flagArr = [],
+        isEnd = false;
+    for(var i = 0; i < m; i++){
+        flagArr[i] = i < n ? 1 : 0;
+    }
+    flagArrs.push(flagArr.concat());
+    // 当n不等于0并且m大于n的时候进入
+    if(n && m > n){
+        while(!isEnd){
+            var leftCnt = 0;
+            for(var i = 0; i < m - 1; i++){
+                if (flagArr[i] == 1 && flagArr[i + 1] == 0){
+                    for(var j = 0; j < i; j++){
+                        flagArr[j] = j < leftCnt ? 1 : 0;
+                    }
+                    flagArr[i] = 0;
+                    flagArr[i + 1] = 1;
+                    var aTmp = flagArr.concat();
+                    flagArrs.push(aTmp);
+                    if(aTmp.slice(-n).join('').indexOf('0') == -1){
+                        isEnd = true;
+                    }
+                    break;
+                }
+                flagArr[i] == 1 && leftCnt++;
+            }
+        }
+    }
+    return flagArrs;
+}
+function initSKU(sku){
+    var resultSKU = [];
+    var skuKeys = getObjKeys(sku);
+    for(var i in skuKeys){
+        var skuKey = skuKeys[i]; // 获取一条SKU的key
+        var skuData = sku[skuKey]; // 获取一条SKU的相关数据
+        var skuKeyAttrs = skuKey.split(';'); // 获取SKU的key的属性数组
+        var combArr = arrayCombine(skuKeyAttrs);
+        for(var j = 0; j < combArr.length; j++){
+            var key = combArr[j].join(';');
+            if(resultSKU[key]){
+                resultSKU[key].count += skuData.count;
+                resultSKU[key].prices.push(skuData.price);
+            }else{
+                resultSKU[key] = {
+                    count: skuData.count,
+                    prices: [skuData.price]
+                };
+            }
+        }
+    }
+    return resultSKU;
+}
+// 渲染DOM
+function initDOM(key){
+    var html = '';
+    $(key).each(function(index, el) {
+        html += '<div>';
+            html += '<label>' + this.name + '：</label>';
+            $(this.item).each(function(index, el) {
+                html += '<input type="button" class="sku" value="' + this + '">';
+            });
+        html += '</div>';
+    });
+    $('#sku').html(html);
+}
+// 显示库存和价格
+function showCountAndPrice(resultSKU){
+    var sku = [];
+    $('#sku div').each(function(index, el) {
+        sku.push($(this).children('.selected').val() || '');
+    });
+    sku = sku.join(';');
+    var maxPrice = Math.max.apply(Math, resultSKU[sku].prices);
+    var minPrice = Math.min.apply(Math, resultSKU[sku].prices);
+    $('#result').html('库存：' + resultSKU[sku].count + '<br>' + '价格：' + (maxPrice > minPrice ? minPrice + '-' + maxPrice : maxPrice));
+}
+// 校验相关SKU是否可选
+function checkSKU(resultSKU){
+    $('#sku div .sku').prop('disabled', false);
+    var count = 0;
+    var i = 0;
+    $('#sku div').each(function(index, el) {
+        if($(this).children('.selected').length == 0){
+            count += 1;
+            i = index;
+        }
+    });
+    // 当只有一组属性没选时
+    if(count == 1){
+        $('#sku div:eq(' + i + ') .sku').each(function(index, el) {
+            var sku = [];
+            var text = $(this).val();
+            $('#sku div').each(function(index, el) {
+                if(index != i){
+                    sku.push($(this).children('.selected').val());
+                }else{
+                    sku.push(text);
+                }
+            });
+            if(resultSKU[sku.join(';')].count == 0){
+                $(this).prop('disabled', true);
+            }
+        });
+    }
+    // 当所有属性都有选时
+    if(count == 0){
+        $('#sku div').each(function(index, el) {
+            var i = index;
+            $('#sku div:eq(' + index + ') .sku:not(.selected)').each(function(index, el) {
+                var sku = [];
+                var text = $(this).val();
+                $('#sku div').each(function(index, el) {
+                    if(index != i){
+                        sku.push($(this).children('.selected').val());
+                    }else{
+                        sku.push(text);
+                    }
+                });
+                if(resultSKU[sku.join(';')].count == 0){
+                    $(this).prop('disabled', true);
+                }
+            });
+        });
+    }
+    showCountAndPrice(resultSKU);
+}
+$(function(){
+    // 属性集
+    var key = [
+        {name: '颜色', item: ['黑', '金', '白']},
+        {name: '内存', item: ['16G', '32G']},
+        {name: '运营商', item: ['电信', '移动', '联通']}
+    ];
+    // 数据集
+    var sku = {
+        '黑;16G;电信': {price: 100, count: 10},
+        '黑;16G;移动': {price: 101, count: 11},
+        '黑;16G;联通': {price: 102, count: 0},
+        '黑;32G;电信': {price: 103, count: 13},
+        '黑;32G;移动': {price: 104, count: 14},
+        '黑;32G;联通': {price: 105, count: 0},
+        '金;16G;电信': {price: 106, count: 16},
+        '金;16G;移动': {price: 107, count: 17},
+        '金;16G;联通': {price: 108, count: 18},
+        '金;32G;电信': {price: 109, count: 0},
+        '金;32G;移动': {price: 110, count: 20},
+        '金;32G;联通': {price: 111, count: 21},
+        '白;16G;电信': {price: 112, count: 0},
+        '白;16G;移动': {price: 113, count: 23},
+        '白;16G;联通': {price: 114, count: 24},
+        '白;32G;电信': {price: 115, count: 0},
+        '白;32G;移动': {price: 116, count: 26},
+        '白;32G;联通': {price: 117, count: 27}
+    };
+    var resultSKU = initSKU(sku);
+    initDOM(key);
+    checkSKU(resultSKU);
+    $('#sku input[type=button]:not(:disabled)').click(function(event) {
+        $(this).toggleClass('selected').siblings().removeClass('selected');
+        checkSKU(resultSKU);
+    });
+});
+
+</script>
+
+</head>
+<body>
+	<div id="sku"></div>
+	<div id="result"></div>
+</body>
+
+</html>

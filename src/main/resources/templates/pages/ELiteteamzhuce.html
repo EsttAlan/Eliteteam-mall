@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script
+	src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- <link rel="stylesheet" href="./static/Registered.css" /> -->
+<style type="text/css">
+#header {
+	width: 1100px;
+	/* 设置当前元素在水平方向居中显示 */
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px; /* 设置上外边距 */
+	/* height: 114px; */ /* 设置元素的高度 */
+}
+
+#line2  a { /* 请登录 */
+	color: red;
+	/* 设置元素中的文本没有下划线 */
+	text-decoration: none;
+	font-size: 24px;
+}
+
+#line2 { /* 头部的第2行 */
+	height: 42px;
+	text-align: right; /* 设置元素内容居右 */
+	margin-top: -100px;
+}
+
+#line2  span { /* 已有账号 */
+	color: #999;
+	font-size: 24px;
+}
+
+#main {
+	/* width: 850px;  */
+	margin-left: auto;
+	margin-right: auto;
+	/*  height: 545px; */
+	/* border: 5px solid #d0d0d0; */
+	/* border-top-width: 9px;
+	border-bottom-width: 9px;  */
+	padding-top: 25px;
+}
+
+#main  form { /* form表单 */
+	/* width: 819px; */
+	margin-left: 850px;
+	/* 设置form为行内块元素, 能够和其他元素显示在同一行 */
+	display: inline-block;
+	margin-top: -700px;
+}
+/* 选中所有的input元素 */
+#main form table input {
+	width: 381px;
+	height: 50px;
+	font-size: 16px;
+	color: #999;
+	border: 1px solid #d0d0d0;
+	text-indent: 45px;
+}
+/* 用户名输入框 */
+#main form table input[name='username'] {
+	background: url(imgs/../photo/u_ico.jpg) no-repeat 15px 15px;
+}
+/* 密码和确认密码输入框 */
+#main form table input[type='password'] {
+	background: url(imgs/../photo/p_ico.jpg) no-repeat 15px 15px;
+}
+/* 验证手机输入框 */
+#main form table input[name='number'] {
+	background: url(imgs/../photo/phone_ico.jpg) no-repeat 15px 15px;
+}
+/* 选中 或、验证邮箱 */
+#main form table input[name='what'] {
+	font-size: 16px;
+	margin-top: 40px;
+	background: url(imgs/../photo/ZH.jpeg.jpg) no-repeat 15px 15px;
+}
+
+#main form table .yzsj a {
+	font-size: 16px;
+	color: #005ea7;
+}
+/* 选中用户名、密码、确认密码输入框下方的提示消息 */
+#main form table .msg {
+	height: 32px;
+	font-size: 12px;
+	text-indent: 45px;
+	color: #c3c3c3;
+	background: url(imgs/../alert_1.jpg) no-repeat 17px 7px;
+}
+/* 选中class为alert的td元素 */
+#main form table .alert {
+	background: url(imgs/../alert_1.jpg) no-repeat 17px 7px;
+	/* 	color: #e64346; */
+	color: #c3c3c3;
+}
+/* 选中 "我已阅读并同意: 的span元素 */
+#main form table  .protocol {
+	height: 83px;
+	font-size: 16px;
+	line-height: 52px;
+	text-indent: 60px;
+}
+
+#main form table  .protocol  a {
+	color: #005ea7;
+	text-decoration: none;
+}
+/* 选中立即注册按钮 */
+#main form table input[type='submit'] {
+	background: #e64346;
+	color: #fff;
+	font-size: 20px;
+	/* 覆盖之前设置的首行缩进 */
+	text-indent: 0px;
+	margin-top: 30px
+}
+
+}
+#footer {
+	background: cyan;
+	width: 1200px /* 设置当前元素在水平方向居中显示 */ 
+	 margin-left: auto;
+	margin-right: auto;
+}
+
+#footer  p {
+	text-align: center;
+	font-size: 14px;
+	line-height: 34px;
+	color: #999;
+	margin-top: 0px;
+}
+
+#thediv {
+	width: 100%;
+	height: 0px;
+	line-height: 100px;
+	text-align: center;
+	position: absolute;
+	margin-top: 190px;
+	margin-left: -250px;
+}
+
+#link {
+	color: red;
+}
+
+#abcd {
+	margin-top: 120px;
+}
+
+.modal-title {
+	color: red;
+	width: 500px;
+	height: 300px;
+	font-size: 36px;
+	text-align: center;
+	font-family: 楷体;
+}
+</style>
+<script type="text/javascript">
+function Show_Hidden(obj)
+{
+ if(obj.style.display=="none")
+ {
+  obj.style.display='block';
+ }
+ else
+ {
+  obj.style.display='none';
+ }
+}
+window.onload=function()
+{
+ var olink=document.getElementById("link");
+ var odiv=document.getElementById("thediv");
+ olink.onclick=function()
+ {
+  Show_Hidden(odiv);
+  return false;
+ }
+}
+</script>
+</head>
+<body>
+	<div id="thediv">
+		<img src="../photo/887e232b74341fbafb65b2b58ed41e77副本.jpg" width="70%">
+	</div>
+	<!-- 头部(header) -->
+	<div id="header">
+		<div id="line1">
+			<!-- 头部的第1行 -->
+
+			<a href="#" id="link"> <img src="../photo/Registered.jpeg"
+				width="50%"></a>
+			<div id="line2">
+				<!-- 头部的第2行 -->
+				<span>已有账号?</span> <a href="Eliteteam">请登录></a>
+			</div>
+		</div>
+		<div id="abcd">
+			<img src="../photo/展示1.jpeg" width="48%">
+		</div>
+
+
+		<!-- 主体(main) -->
+		<div id="main">
+			<form id="from" action="doIndex" method="Post">
+				<table>
+					<tr>
+						<td><input type="text" name="username" id="username1"
+							placeholder="用户名" /></td>
+					</tr>
+					<tr>
+						<!-- 用户名输入框下方的提示消息 -->
+						<td class="msg">支持字母、数字、“-”、“_”的组合，4-20个字符</td>
+					</tr>
+					<tr>
+						<!-- 密码 -->
+						<td><input id="password1" type="password" name="password"
+							placeholder="设置密码" /></td>
+					</tr>
+					<tr>
+						<!-- 密码输入框下方的提示消息 -->
+						<td class="msg">建议使用数字、字母和符号两种以上的组合，6-20个字符</td>
+					</tr>
+					<tr>
+						<!-- 确认密码 -->
+						<td><input id="salt1" type="password" name="salt"
+							placeholder="确认密码" /></td>
+					</tr>
+					<tr>
+
+						<!-- 确认密码输入框下方的提示消息 -->
+						<td class="msg alert">两次密码保持一致</td>
+					</tr>
+					<tr>
+						<!-- 验证手机 -->
+						<td class="yzsj"><input type="text" name="number"
+							id="number1" placeholder="验证手机" />
+
+
+
+							<div class="abc">
+								<input type="text" value="" placeholder="请输入验证码" name="what"
+									style="height: 43px; position: relative; top: -15px; font-size: 20px;"
+									id="text">
+							</div>
+							<canvas id="canvas" width="100" height="43" onclick="dj()"
+								style="border: 1px solid #ccc; border-radius: 5px;"></canvas> <!-- <td><button class="btn" onclick="sublim()">提交</button></td> -->
+
+
+
+							<script>
+ var show_num = [];
+ draw(show_num);
+function dj(){
+ draw(show_num);   
+ }
+
+
+
+ 
+function draw(show_num) {
+        var canvas_width=document.getElementById('canvas').clientWidth;
+        var canvas_height=document.getElementById('canvas').clientHeight;
+        var canvas = document.getElementById("canvas");//获取到canvas的对象，演员
+        var context = canvas.getContext("2d");//获取到canvas画图的环境，演员表演的舞台
+        canvas.width = canvas_width;
+        canvas.height = canvas_height;
+        var sCode = "A,B,C,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,W,X,Y,Z,1,2,3,4,5,6,7,8,9,0,q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m";
+        var aCode = sCode.split(",");
+        var aLength = aCode.length;//获取到数组的长度
+			
+        for (var i = 0; i <= 3; i++) {
+            var j = Math.floor(Math.random() * aLength);//获取到随机的索引值
+            var deg = Math.random() * 30 * Math.PI / 180;//产生0~30之间的随机弧度
+            var txt = aCode[j];//得到随机的一个内容
+            show_num[i] = txt;
+            var x = 10 + i * 20;//文字在canvas上的x坐标
+            var y = 20 + Math.random() * 8;//文字在canvas上的y坐标
+            context.font = "bold 23px 微软雅黑";
+
+            context.translate(x, y);
+            context.rotate(deg);
+
+            context.fillStyle = randomColor();
+            context.fillText(txt, 0, 0);
+
+            context.rotate(-deg);
+            context.translate(-x, -y);
+        }
+        for (var i = 0; i <= 5; i++) { //验证码上显示线条
+            context.strokeStyle = randomColor();
+            context.beginPath();
+            context.moveTo(Math.random() * canvas_width, Math.random() * canvas_height);
+            context.lineTo(Math.random() * canvas_width, Math.random() * canvas_height);
+            context.stroke();
+        }
+        for (var i = 0; i <= 30; i++) { //验证码上显示小点
+            context.strokeStyle = randomColor();
+            context.beginPath();
+            var x = Math.random() * canvas_width;
+            var y = Math.random() * canvas_height;
+            context.moveTo(x, y);
+            context.lineTo(x + 1, y + 1);
+            context.stroke();
+        }
+    }
+function randomColor() {//得到随机的颜色值
+        var r = Math.floor(Math.random() * 256);
+        var g = Math.floor(Math.random() * 256);
+        var b = Math.floor(Math.random() * 256);
+        return "rgb(" + r + "," + g + "," + b + ")";
+    }
+</script>
+					</tr>
+					<!-- <tr>
+						同意协议
+						<td class="protocol"><span>我已阅读并同意 </span> <a href="#">《精英用户注册协议》</a>
+						</td>
+					</tr> -->
+					<tr>
+						<td><input class="btn" id="zhuce" onclick="Eliteteam()"
+							type="submit" value="立即注册" /></td>
+					</tr>
+
+					<!--  data-toggle="modal" data-target="#myModal"  -->
+				</table>
+			</form>
+
+		</div>
+
+
+		<!-- 尾部 -->
+		<div id="footer">
+
+			<p>
+				关于我们 | 联系我们 | 人才招聘 | 商家入驻 | 营销中心 | 精英团队 | 友情连接 | 销售联盟 | 精英社区 | 精英公益|
+				English Eliteteam <br /> Eliteteam ©2020-6.4 精英JY.com版权所有
+
+			</p>
+
+			<!-- 模态框（Modal） -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true"></button>
+							<h4 class="modal-title" id="myModalLabel">
+								"注册成功" <br /> 欢迎进入精英商城 <br /> 请返回登录页面登录 <br /> 谢谢!!!!
+							</h4>
+						</div>
+						<div class="modal-body"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">关闭</button>
+							<a href="Eliteteam"><button type="button"
+									class="btn btn-primary">确定</button></a>
+						</div>
+					</div>
+				</div>
+			</div>
+</body>
+
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script
+	src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+
+
+$(function(){
+
+	//立即注册按钮的点击事件
+
+	$("#zhuce").click(function(){
+
+	//声明4个变量接收表单的数据
+
+	var username=$("#username1").val();
+
+	var password=$("#password1").val();
+
+	var salt=$("#salt1").val();
+
+	var number=$("#number1").val();
+	
+	//前端的简单验证
+
+	//1.非空 
+ 
+	 if(username=="" || password=="" || salt=="" || number==""){
+
+	alert("输入不能为空");
+
+	//return后下面的代码不在执行
+
+	return ;
+
+	} 
+
+	//2.用户名长度3-16
+
+	if(username.length<4 ||username.length>20){
+
+	alert("用户名长度必须在4-20位");
+	return ;
+
+	}
+	if(password.length<6 ){
+		alert("密码长度不能小于6位数");
+		return ;
+	}
+	
+
+	//3.密码和确认密码是否一致
+
+	if(password!=salt){
+
+	alert("两次输入密码不一致");
+	
+	return;
+
+	}
+	if(number.length!=11){
+		alert("手机号码格式不正确");
+		return;
+	} 
+	
+	var val=document.getElementById("text").value;  
+    var num = show_num.join("");
+    if(val==''){
+        alert('请输入验证码！');
+        return;
+    }else if(val == num){
+    	
+      
+    }else{
+        alert('验证码错误！\n请重新输入！');
+        document.getElementById("text").value='';
+        draw(show_num);
+        return;
+       
+    }
+    
+    
+    
+      alert("注册成功") 
+    
+   function Eliteteam(){
+		$("#form").submit();
+		
+	}   
+  
+  })  })
+    /* var params={
+						 username:$("#username1").val(),
+						 password:$("#password1").val(),
+						  salt:$("#salt1").val(),
+
+	                      number:$("#number1").val()
+}
+  var url="doIndex";
+	  console.log("params",params);
+   $.post(url,params,function(result){
+		  console.log("Eliteteamzhuce.result",result);
+		  
+		  if(result.state==1){
+			//跳转到indexUI对应的页面
+			alert("注册成功")
+		  }else{
+			alert("注册shi'bai")
+		  }
+		  return false;//防止刷新时重复提交
+	  });
+    */
+  
+	</script>
+
+
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>凤凰商城</title>
+
+<!-- 几秒后自动跳转到某个页面 -->
+<span style="font-size: 18px;"> </span>
+<span style="font-size: 24px;"><meta http-equiv="refresh"
+		content="5;URL=/mall/PagePrincipal"> </span>
+
+<script src="/jquery-3.5.1.js"></script>
+<style type="text/css">
+#footer p {
+	text-align: center;
+	font-size: 14px;
+	line-height: 34px;
+	color: #999;
+	margin-top: 0px;
+	/* style="align-content: flex-end;" */
+}
+
+p {
+	text-align: left;
+	font-size: 13px;
+	line-height: 20px;
+	color: #999;
+}
+
+.col-rm-3 {
+	padding: 10px 10px;
+	float: left;
+	background-color: black;
+	height: 480px;
+}
+
+.from-control {
+	margin-top: 23px;
+	margin-bottom: 23px;
+	height: 44px;
+	width: 320px;
+}
+
+div.col-cc-2 {
+	float: right;
+	padding: 10px 30px;
+}
+
+.sousuo {
+	color: black;
+	padding: 4px;
+	margin-bottom: 4px;
+	border-width: 2px 2px 2px 2px;
+	border-color: #f30213;
+	border-style: solid;
+}
+
+#lgosrc {
+	margin-right: 450px;
+}
+
+#keywordsButton {
+	background-color: #f30213
+}
+
+dd a {
+	text-decoration: none;
+}
+
+#data {
+	margin-top: 10px;
+}
+
+#form {
+	margin-left: 370px;
+	margin-top: 30px;
+}
+
+#menudiv {
+	text-align: left;
+	margin-top: -70px;
+}
+
+ul.layui-nav {
+	margin-bottom: -30px;
+}
+
+#searchbutton {
+	height: 44px;
+}
+</style>
+
+
+
+
+
+<link rel="stylesheet" href="/css/basket.css" />
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" href="../../layui/css/layui.css" />
+
+
+</head>
+<body>
+	
+	<div id="top">
+		<div></div>
+		</br>
+		<div id="line1">
+			<a href="#"> <img alt="" src="/imgs/logo.jpg"></a>
+		</div>
+		<div id="line2"
+			style="width: 2000px; text-align: center; margin-left: auto; margin-right: auto;">
+			<table class="table1">
+				<!-- 搜索框 -->
+				
+				<form id="form" method="post" action="/mall/GoodsPageBase?keyWords="
+					+$("#keyWords").val()>
+					<input type="text" class="from-control sousuo" id="keyWords"
+						name="keyWords" placeholder="请输入商品名称进行搜索">
+					<button type="submit" id="searchbutton" class="btn btn-danger"
+						aria-hidden="true">搜索</button>
+				</form>
+			
+
+
+				<tr>
+					<td><a href="favorites.html"><span class="fa fa-heart"></span>&nbsp;收藏</a></
+					
+					<td>
+					<td class="li-split">|</td>
+					<td><a href="orders.html"><span class="fa fa-file-text"></span>&nbsp;订单</a></td>
+					<td class="li-split">|</td>
+					<td><a href="cart.html"><span class="fa fa-cart-plus"></span>&nbsp;购物车</a></td>
+					<td class="li-split">|</td>
+					<td>
+						<div class="btn-group">
+							<button type="button" class="btn btn-link dropdown-toggle"
+								data-toggle="dropdown">
+								<span id="top-dropdown-btn"><span class="fa fa-gears"></span>&nbsp;管理
+									<span class="caret"></span></span>
+							</button>
+							<ul class="dropdown-menu top-dropdown-ul" role="menu">
+								<li><a href="password.html">修改密码</a></li>
+								<li><a href="userdata.html">个人资料</a></li>
+								<li><a href="upload.html">上传头像</a></li>
+								<li><a href="address.html">收货管理 </a></li>
+							</ul>
+						</div>
+					</td>
+					<td class="li-split">|</td>
+					<td><a href="login.html"><span class="fa fa-user"></span>&nbsp;登录</a></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+
+
+	<!-- 上头,下身 -->
+
+	<div class="form-group">
+		<!-- <label for="name"> </label> -->
+		
+		<hr>
+		<div class="text-center pay-res">
+			<i class="layui-icon layui-icon-ok"
+				style="font-size: 60px; color: #1E9FFF;"></i> <span
+				class="fa fa-check-square-o pay-res-icon"></span> 支付成功
+		</div>
+		<div class="text-center">注意5秒后自动跳转到主页</div>
+		<div class="text-center">商城不会以系统异常、订单升级为由，要求你点击任何链接进行退款操作</div>
+		<div class="pay-bar">
+			<a href="xxx.html"></a>
+		</div>
+
+	</div>
+	<div id=footer>
+		<p>
+			关于我们 | 联系我们 | 人才招聘 | 商家入驻 | 营销中心 | 精英团队 | 友情连接 | 销售联盟 | 精英社区 | 精英公益 |
+			English Eliteteam <br /> Eliteteam 2020-6.4 精英JY.com版权所有
+		</p>
+
+	</div>
+
+
+</body>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="../layui/layui.all.js"></script>
+<script type="text/javascript" src="/js/basket.js" />
+
+<script type="text/javascript">
+	
+function random_No(j) {
+    var random_no = "";
+    for (var i = 0; i < j; i++) //j位随机数，用以加在时间戳后面。
+    {
+        random_no += Math.floor(Math.random() * 10);
+    }
+    random_no = new Date().getTime() + random_no;
+    return random_no;
+};
+
+</script>
+</html>

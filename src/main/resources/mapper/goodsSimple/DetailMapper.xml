@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.mall.detail.dao.DetailDao">
+	
+	<resultMap type="com.cy.mall.detail.entity.SkuOption" id="skuAllOptionsResultMap">
+		<id column="id" property="id" />
+		<result column="sku_id" property="skuId" />
+		<result column="option_id" property="optionId" />
+	</resultMap> 
+
+	
+	<resultMap type="com.cy.mall.detail.entity.Sku" id="skuResultMap">
+		<id column="sku_id" property="skuId" />
+		<result column="spu_id" property="spuId" />
+		<result column="name" property="name" />
+		<result column="price" property="price" />
+		<result column="reserve" property="reserve" />
+		<result column="img" property="img" />
+
+	</resultMap> 
+	
+
+	<resultMap type="com.cy.mall.detail.entity.Spu" id="spuResultMap">
+		<id column="spu_id" property="spuId" />
+		<result column="spu_code" property="spuCode" />
+		<result column="brand_id" property="brandId" />
+		<result column="category_id" property="categoryId" />
+		<result column="property_list" property="propertyList" />
+
+	</resultMap>
+	
+	<resultMap type="com.cy.mall.detail.bo.Property" id="property">
+	
+		<id property="id" column="id"/>
+		<collection property="optionList"
+					ofType="com.cy.mall.detail.bo.Option"
+					column="id"
+					select="com.cy.mall.detail.dao.DetailDao.findOptionsByPropertyId"
+					>
+		
+		</collection>
+	
+	</resultMap>
+	
+	<select id="findOptionNameById" resultType="String">
+		SELECT name
+		FROM options
+		WHERE id in
+		<foreach item="item" index="index" collection="optionIdList" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<update id="updateBasket">
+		update sku_basket
+		set
+		number=number+#{number} where skuId=#{skuId}
+	</update>
+	
+	<insert id="insertObject"
+               parameterType="com.cy.mall.detail.entity.SkuBasket"
+               useGeneratedKeys="true"
+               keyProperty="id">
+               insert into sku_basket
+               (skuName,skuId,model,skuPrice,number,userId,img)
+               values
+               (#{skuName},#{skuId},#{model},#{skuPrice},#{number},#{userId},#{img})
+               
+    </insert>
+	
+	<select id="findReserveBySkuId" resultType="integer">
+		select reserve from sku where sku_id=#{skuId}
+	</select>
+	
+	<select id="findAllOptionsBySkuId" resultMap="skuAllOptionsResultMap">
+		select * from sku_option
+		where sku_id in(select sku_id from sku where spu_id =(select spu_id from sku where sku_id=#{skuId})) 
+	
+	</select>
+	
+	<select id="findPropertyById" resultMap="property">
+		
+		select id,name,state from property where id=#{id}
+		
+	</select>
+	
+	<select id="findSkuBySkuId" resultMap="skuResultMap">
+		select * from sku where sku_id=#{skuId}
+	</select>
+	
+	<select id="findSpuBySpuId" resultMap="spuResultMap">
+		select * from spu where spu_id=#{spuId}
+	</select>
+	
+	<select id="findOptionsByPropertyId" resultType="com.cy.mall.detail.bo.Option">
+		select id,name,state,img from options where propertyId=#{propertyId}
+	</select>
+	
+	<select id="findPropertyIdBySkuId" resultType="int">
+		select id from property where category_id=(select category_id from spu 
+			where spu_id=(select spu_id from sku where sku_id=#{skuId}))
+	</select>
+	
+</mapper>
+
